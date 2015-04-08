@@ -33,10 +33,13 @@ namespace VOIPIfier.Network
 
         private void StartRecoding(int device = 0)
         {
+
+            //NAudio.Dsp.BiQuadFilter filter = NAudio.Dsp.BiQuadFilter.LowPassFilter()
             VoiceBuffer.Clear();
 
             var sourceStream = new NAudio.Wave.WaveIn();
             sourceStream.BufferMilliseconds = 20;
+            sourceStream.NumberOfBuffers = 2;
             sourceStream.DeviceNumber = device;
             sourceStream.WaveFormat = new NAudio.Wave.WaveFormat(44100, 16, 1);
 

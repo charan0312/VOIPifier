@@ -20,6 +20,8 @@ namespace VOIPIfier.Sound
             provider.DiscardOnBufferOverflow = true;
 
             waveOut = new WaveOut();
+            //waveOut.DesiredLatency = 20;
+            waveOut.NumberOfBuffers = 2;
             waveOut.Init(provider);
 
             waveOut.Play();
@@ -28,21 +30,7 @@ namespace VOIPIfier.Sound
         public static void AddBytes(byte[] bytes, int length)
         {
             if (provider == null) Init(); // Has the provider not been initilized yet? If not, do so!
-
             provider.AddSamples(bytes, 0, bytes.Length);
-        }
-
-        public static void GetRecordByte(int device = 0)
-        {
-            var sourceStream = new NAudio.Wave.WaveIn();
-            sourceStream.BufferMilliseconds = 20;
-            sourceStream.DeviceNumber = device;
-            sourceStream.WaveFormat = new NAudio.Wave.WaveFormat(44100, 8, 1);
-
-            sourceStream.DataAvailable += sourceStream_DataAvailable;
-
-            sourceStream.StartRecording();
-
         }
 
         public String[] getRecordDevices()
@@ -56,11 +44,6 @@ namespace VOIPIfier.Sound
                 Console.WriteLine("Device {0}: {1}, {2} channels", waveInDevice, deviceInfo.ProductName, deviceInfo.Channels);
             }
             return re;
-        }
-
-        private static void sourceStream_DataAvailable(object sender, WaveInEventArgs e)
-        {
-            //Network.Backend.SendUDP(e.Buffer, e.BytesRecorded, Network.Backend.CONNECTED_VOIP_IP);
         }
 
         public static void PlayLoop(String file)
