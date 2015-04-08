@@ -25,3 +25,29 @@ C:\Users\Tim\Documents\Visual Studio 2013\Projects\VOIPIfier\VOIPIfier\bin\Debug
 C:\Users\Tim\Documents\Visual Studio 2013\Projects\VOIPIfier\VOIPIfier\obj\Debug\VOIPIfier_MarkupCompile.lref
 C:\Users\Tim\Documents\Visual Studio 2013\Projects\VOIPIfier\VOIPIfier\obj\Debug\UI\IncommingCall.baml
 C:\Users\Tim\Documents\Visual Studio 2013\Projects\VOIPIfier\VOIPIfier\obj\Debug\UI\IncommingCall.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\VOIPIfier.exe.config
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.exe
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.pdb
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\VOIPIfier.exe
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\VOIPIfier.pdb
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\VOIPIfier.exe.CodeAnalysisLog.xml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\VOIPIfier.exe.lastcodeanalysissucceeded
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\NAudio.xml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\MainWindow.baml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\IncommingCall.baml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\MessageDialog.baml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\Messages.baml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\MainWindow.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\IncommingCall.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\MessageDialog.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\Messages.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\UserView.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\App.g.cs
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier_MarkupCompile.cache
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier_MarkupCompile.lref
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\UI\UserView.baml
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.g.resources
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.Properties.Resources.resources
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.csproj.GenerateResource.Cache

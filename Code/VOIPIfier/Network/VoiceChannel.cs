@@ -15,18 +15,23 @@ namespace VOIPIfier.Network
         // The peers to send the data to
         private Dictionary<String, int> listeners = new Dictionary<string, int>();
         private List<byte> VoiceBuffer = new List<byte>();
-        private Thread broadcastThread;
+
         /// <summary>
         /// Indicates wether or not to send the voice data
         /// </summary>
         public Boolean Sending { get; set; }
 
+        /// <summary>
+        /// Will register a peer to recive the voice data
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="port"></param>
         public void RegisterListener(String ip, int port)
         {
             listeners.Add(ip, port);
         }
 
-        private void GetRecordByte(int device = 0)
+        private void StartRecoding(int device = 0)
         {
             VoiceBuffer.Clear();
 
@@ -44,11 +49,6 @@ namespace VOIPIfier.Network
 
         void sourceStream_DataAvailable(object sender, WaveInEventArgs e)
         {
-            /*for (int i = 0; i < e.BytesRecorded; i++)
-            {
-                VoiceBuffer.Add((byte)e.Buffer.GetValue(i));
-            }*/
-
             if(Sending)
             {
                 for (int i = 0; i < listeners.Count; i++)
@@ -64,48 +64,13 @@ namespace VOIPIfier.Network
         /// </summary>
         public void StartBroadcasting()
         {
-            if (broadcastThread == null || !broadcastThread.IsAlive)
-            {
-                GetRecordByte();
-                Sending = true;
-                /*broadcastThread = new Thread(new ThreadStart(_sendBroadcast));
-                broadcastThread.IsBackground = true;
-                broadcastThread.Start();*/
-            }
+            Sending = true;
+            StartRecoding();
         }
 
         public void StopBroadcasting()
         {
             Sending = false;
-            //broadcastThread.Abort();
         }
-
-        private Byte[] getVoiceBytes()
-        {
-            int len = VoiceBuffer.Count();
-            Byte[] buffer = new Byte[len];
-
-            for (int i = 0; i < len; i++)
-            {
-                buffer[i] = VoiceBuffer[i];
-            }
-            return buffer;
-        }
-
-        private void _sendBroadcast() {
-            /*while (Sending)
-            {
-                for (int i = 0; i < listeners.Count; i++)
-                {
-                    var element = listeners.ElementAt(i);
-                    String ip = element.Key;
-                    int port = element.Value;
-                    byte[] buffer = getVoiceBytes();
-                    Network.Backend.SendUDP(buffer, 0, ip, port);
-                }
-                VoiceBuffer.Clear();
-            }*/
-        }
-
     }
 }

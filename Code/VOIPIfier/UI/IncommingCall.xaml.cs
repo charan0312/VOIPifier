@@ -19,7 +19,7 @@ namespace VOIPIfier.UI
     /// <summary>
     /// Interaction logic for IncommingCall.xaml
     /// </summary>
-    public partial class IncommingCall : Window
+    public partial class IncommingCall : Window, IDisposable
     {
         private WaveOut waveOut;
 
@@ -67,6 +67,11 @@ namespace VOIPIfier.UI
         {
             Answer = true;
             Close();
+        }
+
+        public void Dispose()
+        {
+            waveOut.Dispose();
         }
     }
 }

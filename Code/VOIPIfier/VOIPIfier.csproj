@@ -63,6 +63,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Chat\ChatRoom.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Network\Packets\CallRequest.cs" />
     <Compile Include="Network\Packets\CallRequestResponse.cs" />
     <Compile Include="Network\Packets\Message.cs" />

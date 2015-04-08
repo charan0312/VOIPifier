@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Tim\documents\visual studio 2013\Projects\VOIPIfier\VOIPIfier\obj\Debug\
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\
 VOIPIfier
 none
 false
-DEBUG;TRACE
-C:\Users\Tim\documents\visual studio 2013\Projects\VOIPIfier\VOIPIfier\App.xaml
+CODE_ANALYSIS;DEBUG;TRACE
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\App.xaml
 5863617768
 
-20-65416828
-161779300197
+23-347570733
+161267731411
 MainWindow.xaml;UI\IncommingCall.xaml;UI\MessageDialog.xaml;UI\Messages.xaml;UI\UserView.xaml;
 
 False
