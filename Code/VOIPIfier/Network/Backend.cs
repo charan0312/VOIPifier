@@ -21,44 +21,64 @@ namespace VOIPIfier.Network
         public static bool Running = false;
         public static UdpClient client;
 
-        public static void SendPacketTCP(Packets.BasePacket packet)
+        public static async void SendPacket(Packets.BasePacket packet)
         {
-            TcpClient client = new TcpClient();
-            client.Connect(IPAddress.Parse(packet.IP), packet.Port);
             byte[] buffer = packet.GetBytes();
-            client.GetStream().Write(buffer, 0, buffer.Length);
+            if (packet.UseTCP)
+            {
+                // Send a tcp version
+                TcpClient tcp = new TcpClient();
+                await tcp.ConnectAsync(IPAddress.Parse(packet.IP), packet.Port);
+                await tcp.GetStream().WriteAsync(buffer, 0, buffer.Length);
+            }
+            else
+            {
+                // Send a UDP version
+                //if(client == null) client = new UdpClient(new IPEndPoint(IPAddress.Any, PORT));
+                //await client.SendAsync(buffer, buffer.Length, new IPEndPoint(IPAddress.Parse(packet.IP), packet.Port));
+                Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+                IPAddress serverAddr = IPAddress.Parse(packet.IP);
+
+                IPEndPoint endPoint = new IPEndPoint(serverAddr, packet.Port);
+
+                sock.SendTo(buffer, endPoint);
+            }
         }
 
         public static void Listen()
         {
-            if (ListenThreadTCP == null || !ListenThreadTCP.IsAlive)
-            {
-                Running = true;
+            Running = true;
 
-                ListenThreadTCP = new Thread(new ThreadStart(ListenForTcp));
-                ListenThreadTCP.IsBackground = true;
-                ListenThreadTCP.Start();
+            ListenThreadTCP = new Thread(new ThreadStart(ListenForTcp));
+            ListenThreadTCP.IsBackground = true;
+            ListenThreadTCP.Start();
 
-                ListenThreadUDP = new Thread(new ThreadStart(ListenForUDP));
-                ListenThreadUDP.IsBackground = true;
-                ListenThreadUDP.Start();
-            }
+            ListenThreadUDP = new Thread(new ThreadStart(ListenForUDP));
+            ListenThreadUDP.IsBackground = true;
+            ListenThreadUDP.Start();
         }
 
         public static void ListenForUDP()
         {
-            UdpClient client = new UdpClient(PORT);
+            client = new UdpClient(PORT);
 
-            //System.IO.Stream stream = System.IO.File.OpenWrite("Speech Off.wav");
             while (Running)
             {
-                IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT);
-                byte[] buffer = client.Receive(ref ip);
-                //stream.Write(buffer, 0, buffer.Length);
-                Sound.Backend.AddBytes(buffer, buffer.Length);
-                //if (buffer.Length < 1024) Sound.Backend.Play();
+                try
+                {
+                    IPEndPoint ip = new IPEndPoint(IPAddress.Any, PORT);
+                    byte[] buffer = client.Receive(ref ip);
+                    //ThreadPool.QueueUserWorkItem((Object o) =>
+                    //{
+                    HandlePacket(buffer);
+                    //});
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("UDP-Recive error: " + ex.Message);
+                }
             }
-            //stream.Close();
         }
 
         public static void SendUDP(byte[] bytes, int length, String ip, int port)
@@ -69,7 +89,7 @@ namespace VOIPIfier.Network
 
             if (length == 0) length = bytes.Length;
 
-            if(client == null) client = new UdpClient();
+            if (client == null) client = new UdpClient();
             client.SendAsync(bytes, length, new IPEndPoint(IPAddress.Parse(ip), port));
         }
 
@@ -82,36 +102,60 @@ namespace VOIPIfier.Network
             {
 
                 TcpClient client = listener.AcceptTcpClient(); // Listen for and accept a TcpClient
-                NetworkStream stream = client.GetStream();
-                
-                String type = ReadString(stream);
 
-                Packets.BasePacket packet = null;
-                switch (type)
+                ThreadPool.QueueUserWorkItem((Object o) => // Put into it's own "fake-thread" and handle packet in order to not block the accepting thread
                 {
-                    case "StatusUpdate":
-                        packet = new Packets.StatusUpdate();
-                        break;
-                    case "Message":
-                        packet = new Packets.Message();
-                        break;
-                    case "CallRequest":
-                        packet = new Packets.CallRequest();
-                        break;
-                    case "CallRequestResponse":
-                        packet = new Packets.CallRequestResponse();
-                        break;
+                    NetworkStream stream = client.GetStream();
+                    HandlePacket(stream);
+                });
+            }
+        }
 
-                    default:
-                        Logger.Error("Packet type '" + type + "' is not rekognized and will not be handled.");
-                        break;
-                }
+        /// <summary>
+        /// Will pipe into HandlePacket(Stream str) with stream as a MemoryStream of bytes put in
+        /// </summary>
+        /// <param name="data">The data to put in MemoryStream/to be handled</param>
+        private static void HandlePacket(byte[] data)
+        {
+            Logger.Info("Adding " + data.Length + " bytes to MS for packet handeling");
+            MemoryStream ms = new MemoryStream();
+            ms.Write(data, 0, data.Length);
+            HandlePacket(ms);
+        }
 
-                if (packet != null)
-                {
-                    packet.LoadJson(ReadString(stream));
-                    packet.Process();
-                }
+        /// <summary>
+        /// Will read and process a packet
+        /// </summary>
+        /// <param name="str">The input stream</param>
+        private static void HandlePacket(Stream str)
+        {
+            String type = ReadString(str);
+
+            Packets.BasePacket packet = null;
+            switch (type)
+            {
+                case "StatusUpdate":
+                    packet = new Packets.StatusUpdate();
+                    break;
+                case "Message":
+                    packet = new Packets.Message();
+                    break;
+                case "CallRequest":
+                    packet = new Packets.CallRequest();
+                    break;
+                case "CallRequestResponse":
+                    packet = new Packets.CallRequestResponse();
+                    break;
+
+                default:
+                    Logger.Error("Packet type '" + type + "' is not rekognized and will not be handled.");
+                    break;
+            }
+
+            if (packet != null)
+            {
+                packet.LoadJson(ReadString(str));
+                packet.Process();
             }
         }
 
@@ -119,7 +163,7 @@ namespace VOIPIfier.Network
         {
             byte[] strBytes = UTF8Encoding.UTF8.GetBytes(str); // Convert the string into bytes
             byte[] b = BitConverter.GetBytes(strBytes.Length); // Convert the length-integer of the string-array into bytes so the reading end knows how many bytes to read
-            
+
             List<Byte> bytes = new List<Byte>();
             bytes.AddRange(b);
             bytes.AddRange(strBytes);

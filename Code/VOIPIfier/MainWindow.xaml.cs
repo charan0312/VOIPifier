@@ -29,10 +29,9 @@ namespace VOIPIfier
             User.User.RealName = "Tim Panajott";
             INSTANCE = this;
 
+            Network.Backend.Listen();
 
             Username.Content = User.User.RealName;
-
-            Network.Backend.Listen();
 
             Network.Packets.Message update = new Network.Packets.Message();
             update.MessageString = "Hey, sup?";
@@ -49,7 +48,7 @@ namespace VOIPIfier
 
             //Sound.Backend.GetRecordByte();
             Network.VoiceChannel channel = new Network.VoiceChannel();
-            channel.RegisterListener("192.168.0.199", Network.Backend.PORT);
+            channel.RegisterListener("192.168.0.199");
 
             channel.StartBroadcasting();
 

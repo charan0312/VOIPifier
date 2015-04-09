@@ -10,20 +10,22 @@ namespace VOIPIfier.Network.Packets
     public class BasePacket
     {
         protected Dictionary<string, object> values = new Dictionary<string, object>();
-
         public String PacketName;
 
         public int Port { get; set; }
 
         public String IP { get; set; }
+        /// <summary>
+        /// Use TCP or UDP to send this packet
+        /// </summary>
+        public Boolean UseTCP = true;
 
+        /// <summary>
+        /// Will get all bytes for the current packet to be sent
+        /// </summary>
+        /// <returns></returns>
         internal byte[] GetBytes()
         {
-            if (PacketName == null || PacketName == String.Empty)
-            {
-                throw new Exception("PacketName cannot be null or empty!");
-            }
-
             // Get the json value and the flag for this packet.
             String json = JsonConvert.SerializeObject(values);
 
@@ -33,6 +35,17 @@ namespace VOIPIfier.Network.Packets
             return bytes.ToArray();
         }
 
+        /// <summary>
+        /// Returns the length of the packet-byte-array
+        /// </summary>
+        public int Length
+        {
+            get
+            {
+                return GetBytes().Count();
+            }
+        }
+
         public void LoadJson(String json)
         {
             values = JsonConvert.DeserializeObject<Dictionary<String, object>>(json); // Load the json values
@@ -40,12 +53,12 @@ namespace VOIPIfier.Network.Packets
 
         public virtual void Process()
         {
-
+            // Will be overriden by other packets
         }
 
         public void Send()
         {
-            Backend.SendPacketTCP(this);
+            Backend.SendPacket(this);
         }
     }
 }
