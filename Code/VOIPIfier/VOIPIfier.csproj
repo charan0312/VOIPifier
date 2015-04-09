@@ -43,6 +43,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NSpeex">
+      <HintPath>..\..\..\..\Desktop\NAudio\Examples\NSpeex.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -72,6 +75,7 @@
     <Compile Include="Network\VoiceChannel.cs" />
     <Compile Include="Sound\Backend.cs" />
     <Compile Include="Sound\LoopStream.cs" />
+    <Compile Include="Sound\SpeexChatCodec.cs" />
     <Compile Include="UI\IncommingCall.xaml.cs">
       <DependentUpon>IncommingCall.xaml</DependentUpon>
     </Compile>

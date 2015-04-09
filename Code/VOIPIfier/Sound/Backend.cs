@@ -13,11 +13,14 @@ namespace VOIPIfier.Sound
     {
         private static WaveOut waveOut;
         private static BufferedWaveProvider provider;
+        private static Sound.SpeexChatCodec decoder;
 
         public static void Init()
         {
             provider = new BufferedWaveProvider(new WaveFormat(44100, 16, 1)); // DO NOT TOUCH!
             provider.DiscardOnBufferOverflow = true;
+
+            decoder = new WideBandSpeexCodec();
 
             waveOut = new WaveOut();
             //waveOut.DesiredLatency = 20;
@@ -30,6 +33,9 @@ namespace VOIPIfier.Sound
         public static void AddBytes(byte[] bytes, int length)
         {
             if (provider == null) Init(); // Has the provider not been initilized yet? If not, do so!
+
+            bytes = decoder.Decode(bytes, 0, length);
+
             provider.AddSamples(bytes, 0, bytes.Length);
         }
 
@@ -44,11 +50,6 @@ namespace VOIPIfier.Sound
                 Console.WriteLine("Device {0}: {1}, {2} channels", waveInDevice, deviceInfo.ProductName, deviceInfo.Channels);
             }
             return re;
-        }
-
-        public static void PlayLoop(String file)
-        {
-
         }
 
         internal static void Play()

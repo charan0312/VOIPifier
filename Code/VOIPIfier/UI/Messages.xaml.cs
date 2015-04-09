@@ -42,7 +42,7 @@ namespace VOIPIfier.UI
             msg.MessageString = Message.Text.ToString();
             Message.Clear();
 
-            msg.IP = "192.168.0.198";
+            msg.IP = "192.168.0.199";
             msg.Port = Network.Backend.PORT;
             msg.Send();
         }

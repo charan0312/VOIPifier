@@ -15,6 +15,7 @@ namespace VOIPIfier.Network
         // The peers to send the data to
         private Dictionary<String, int> listeners = new Dictionary<string, int>();
         private List<byte> VoiceBuffer = new List<byte>();
+        private Sound.WideBandSpeexCodec encoder;
 
         /// <summary>
         /// Indicates wether or not to send the voice data
@@ -37,6 +38,8 @@ namespace VOIPIfier.Network
             //NAudio.Dsp.BiQuadFilter filter = NAudio.Dsp.BiQuadFilter.LowPassFilter()
             VoiceBuffer.Clear();
 
+            encoder = new Sound.WideBandSpeexCodec();
+
             var sourceStream = new NAudio.Wave.WaveIn();
             sourceStream.BufferMilliseconds = 20;
             sourceStream.NumberOfBuffers = 2;
@@ -52,12 +55,13 @@ namespace VOIPIfier.Network
 
         void sourceStream_DataAvailable(object sender, WaveInEventArgs e)
         {
+            Byte[] send = encoder.Encode(e.Buffer, 0, e.BytesRecorded);
             if(Sending)
             {
                 for (int i = 0; i < listeners.Count; i++)
                 {
                     var element = listeners.ElementAt(i);
-                    Network.Backend.SendUDP(e.Buffer, e.BytesRecorded, element.Key, element.Value);
+                    Network.Backend.SendUDP(send, send.Length, element.Key, element.Value);
                 }
             }
         }

@@ -49,3 +49,4 @@ C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.g.resources
 C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.Properties.Resources.resources
 C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.csproj.GenerateResource.Cache
 C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\obj\Debug\VOIPIfier.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Documents\VOIPifier\Code\VOIPIfier\bin\Debug\NSpeex.dll
